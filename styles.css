@@ -51,23 +51,22 @@ img {
   gap: 1.5rem;
 }
 
+/* LOGO WITH IMAGE + TEXT */
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+.logo-text {
   display: flex;
   flex-direction: column;
   line-height: 1.1;
-}
-
-.logo-main {
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  font-size: 1rem;
-}
-
-.logo-sub {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--accent);
 }
 
 .nav-links {
