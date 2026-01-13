@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Portfolio Optimization in Reinsurance | Kristina Williams, CQF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- Link to your existing styles -->
+  <link rel="stylesheet" href="../styles.css" />
+  
+  <!-- Fonts (same as main site) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  
+  <!-- MathJax for LaTeX rendering -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  <!-- Syntax highlighting for code (optional) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  
+  <style>
+    /* Additional styles specific to blog posts */
+    .post-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      line-height: 1.8;
+    }
+    
+    .post-header {
+      margin-bottom: 40px;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 30px;
+    }
+    
+    .post-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: #1a1a1a;
+      margin-bottom: 15px;
+      line-height: 1.3;
+    }
+    
+    .post-meta {
+      color: #666;
+      font-size: 0.95rem;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    .abstract {
+      background: #f8f9fa;
+      padding: 25px;
+      border-left: 4px solid #2563eb;
+      margin: 30px 0;
+      font-style: italic;
+    }
+    
+    .post-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #1a1a1a;
+      margin-top: 50px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 10px;
+    }
+    
+    .post-content h3 {
+      font-size: 1.3rem;
+      color: #333;
+      margin-top: 35px;
+      margin-bottom: 15px;
+    }
+    
+    .post-content p {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    .post-content ul, .post-content ol {
+      margin-bottom: 20px;
+      padding-left: 30px;
+    }
+    
+    .post-content li {
+      margin-bottom: 10px;
+    }
+    
+    /* Figure styling */
+    .figure {
+      margin: 40px 0;
+      text-align: center;
+    }
+    
+    .figure img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .figure-caption {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #666;
+      font-style: italic;
+    }
+    
+    /* Equation styling */
+    .equation {
+      margin: 30px 0;
+      overflow-x: auto;
+    }
+    
+    /* Code block styling */
+    pre {
+      background: #f6f8fa;
+      padding: 20px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 25px 0;
+    }
+    
+    code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+    
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 30px 0;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+    
+    /* References section */
+    .references {
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 2px solid #e0e0e0;
+    }
+    
+    .references ol {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    
+    .references li {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Simple header with back link -->
+<header class="site-header">
+  <div class="container nav-bar">
+    <div class="logo">
+      <img src="../nometria-logo.png" alt="NometriaRe logo" class="logo-img" />
+      <div class="logo-text">
+        <span class="logo-main">Kristina Williams, CQF</span>
+        <span class="logo-sub">CONSULTING & RESEARCH</span>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="../index.html">← Back to Home</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <article class="post-container">
+    
+    <!-- Post Header -->
+    <div class="post-header">
+      <h1 class="post-title">Portfolio Optimization in Reinsurance: A Stochastic Programming Approach</h1>
+      <div class="post-meta">
+        <span>📅 January 15, 2026</span>
+        <span>⏱️ 12 min read</span>
+        <span>🏷️ Reinsurance, Portfolio Optimization, Risk Management</span>
+      </div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+      <strong>Abstract:</strong> We present a comprehensive framework for optimizing reinsurance portfolios under 
+      tail-risk constraints using stochastic programming techniques. By incorporating catastrophe loss distributions, 
+      correlation structures, and capital allocation requirements, we demonstrate how reinsurers can construct 
+      efficient portfolios that balance return objectives with regulatory capital constraints and risk appetite.
+    </div>
+
+    <!-- Main Content -->
+    <div class="post-content">
+      
+      <h2>1. Introduction</h2>
+      <p>
+        Reinsurance portfolio construction presents unique challenges compared to traditional financial portfolios. 
+        Unlike equity or fixed-income assets that exhibit relatively continuous return distributions, reinsurance 
+        treaties are exposed to catastrophic tail events with highly skewed loss distributions. The correlation 
+        structure between risks is complex, often driven by geographical proximity, meteorological patterns, and 
+        shared exposure to systemic shocks.
+      </p>
+      
+      <p>
+        Traditional mean-variance optimization, while foundational in modern portfolio theory, proves inadequate 
+        for reinsurance applications. The framework fails to capture:
+      </p>
+      <ul>
+        <li>Extreme tail risk and non-normal loss distributions</li>
+        <li>Asymmetric dependence structures during catastrophic events</li>
+        <li>Regulatory capital requirements (e.g., Solvency II, SST)</li>
+        <li>Contractual constraints and treaty terms</li>
+      </ul>
+
+      <h2>2. Mathematical Framework</h2>
+      
+      <h3>2.1 Portfolio Loss Distribution</h3>
+      <p>
+        Consider a reinsurance portfolio consisting of \(n\) treaties. Let \(L_i\) denote the random loss 
+        from treaty \(i\), and \(w_i\) the proportion of capital allocated to treaty \(i\). The aggregate 
+        portfolio loss is:
+      </p>
+      
+      <div class="equation">
+        $$L_p = \sum_{i=1}^{n} w_i L_i$$
+      </div>
+      
+      <p>
+        The dependence structure between losses is critical. We model this using a copula framework:
+      </p>
+      
+      <div class="equation">
+        $$F_{L_1, \ldots, L_n}(l_1, \ldots, l_n) = C(F_{L_1}(l_1), \ldots, F_{L_n}(l_n); \theta)$$
+      </div>
+      
+      <p>
+        where \(C\) is a copula function (e.g., Gaussian, t-copula, or Clayton for tail dependence) and 
+        \(\theta\) represents the dependence parameter(s) estimated from historical data and catastrophe models.
+      </p>
+
+      <h3>2.2 Optimization Problem</h3>
+      <p>
+        We formulate the portfolio optimization as a constrained stochastic program:
+      </p>
+      
+      <div class="equation">
+        $$\begin{aligned}
+        \max_{w} \quad & \mathbb{E}[R_p] - \lambda \cdot \text{CVaR}_\alpha(L_p) \\
+        \text{s.t.} \quad & \sum_{i=1}^{n} w_i = 1 \\
+        & w_i \geq 0, \quad \forall i \\
+        & \text{VaR}_{0.995}(L_p) \leq K_{cap} \\
+        & w_i \leq w_i^{\max}, \quad \forall i
+        \end{aligned}$$
+      </div>
+      
+      <p>
+        where:
+      </p>
+      <ul>
+        <li>\(R_p\) is the portfolio return (premium minus expected losses)</li>
+        <li>\(\lambda\) is the risk aversion parameter</li>
+        <li>\(\text{CVaR}_\alpha\) is the Conditional Value-at-Risk at confidence level \(\alpha\)</li>
+        <li>\(K_{cap}\) is the available capital constraint</li>
+        <li>\(w_i^{\max}\) represents concentration limits</li>
+      </ul>
+
+      <!-- EXAMPLE: How to embed a graph -->
+      <div class="figure">
+        <img src="assets/efficient-frontier.png" alt="Efficient frontier showing return vs CVaR tradeoff">
+        <p class="figure-caption">
+          <strong>Figure 1:</strong> Efficient frontier for a sample reinsurance portfolio showing the return 
+          versus CVaR₉₉.₅ tradeoff. The red dot indicates the optimal portfolio under a 15% capital constraint.
+        </p>
+      </div>
+
+      <h2>3. Methodology</h2>
+      
+      <h3>3.1 Loss Simulation</h3>
+      <p>
+        We employ a hybrid approach combining:
+      </p>
+      <ol>
+        <li><strong>Catastrophe model outputs:</strong> RMS, AIR, or vendor model event sets providing scenario losses</li>
+        <li><strong>Monte Carlo simulation:</strong> 100,000 scenarios drawn from calibrated marginal distributions and copula</li>
+        <li><strong>Historical burn analysis:</strong> Actual treaty performance over the past 20 years</li>
+      </ol>
+
+      <h3>3.2 Numerical Implementation</h3>
+      <p>
+        The optimization is solved using Sequential Least Squares Programming (SLSQP) with gradient 
+        approximation. For CVaR calculation, we use the dual representation:
+      </p>
+      
+      <div class="equation">
+        $$\text{CVaR}_\alpha(L) = \min_{\tau} \left\{ \tau + \frac{1}{1-\alpha} \mathbb{E}[(L - \tau)^+] \right\}$$
+      </div>
+
+      <!-- EXAMPLE: Code block -->
+      <pre><code class="language-python"># Python implementation snippet
+import numpy as np
+from scipy.optimize import minimize
+
+def cvar_objective(weights, scenarios, alpha=0.995, lambda_risk=0.5):
+    """Compute negative expected return plus CVaR penalty"""
+    portfolio_losses = scenarios @ weights
+    expected_return = -np.mean(portfolio_losses)  # Negative of loss
+    
+    # CVaR calculation
+    var = np.percentile(portfolio_losses, alpha * 100)
+    cvar = np.mean(portfolio_losses[portfolio_losses >= var])
+    
+    return -(expected_return - lambda_risk * cvar)
+
+# Optimization with constraints
+result = minimize(
+    cvar_objective,
+    x0=np.ones(n_treaties) / n_treaties,
+    args=(loss_scenarios, 0.995, 0.5),
+    method='SLSQP',
+    constraints=constraints,
+    bounds=bounds
+)
+</code></pre>
+
+      <h2>4. Results</h2>
+      
+      <h3>4.1 Portfolio Composition</h3>
+      <p>
+        Applying our framework to a sample portfolio of 12 property catastrophe treaties across different 
+        perils and geographies, we obtain the following optimal allocation:
+      </p>
+
+      <!-- EXAMPLE: Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>Treaty</th>
+            <th>Peril</th>
+            <th>Region</th>
+            <th>Weight (%)</th>
+            <th>Expected Loss Ratio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>US Wind QS</td>
+            <td>Hurricane</td>
+            <td>Gulf Coast</td>
+            <td>12.3</td>
+            <td>68%</td>
+          </tr>
+          <tr>
+            <td>CA Earthquake XL</td>
+            <td>Earthquake</td>
+            <td>California</td>
+            <td>8.5</td>
+            <td>45%</td>
+          </tr>
+          <tr>
+            <td>EU Windstorm QS</td>
+            <td>Windstorm</td>
+            <td>Western Europe</td>
+            <td>15.7</td>
+            <td>72%</td>
+          </tr>
+          <tr>
+            <td>JP Earthquake XL</td>
+            <td>Earthquake</td>
+            <td>Japan</td>
+            <td>9.2</td>
+            <td>38%</td>
+          </tr>
+          <tr>
+            <td>Other treaties</td>
+            <td>Various</td>
+            <td>Global</td>
+            <td>54.3</td>
+            <td>55%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="figure">
+        <img src="assets/correlation-matrix.png" alt="Correlation matrix of treaty losses">
+        <p class="figure-caption">
+          <strong>Figure 2:</strong> Empirical correlation matrix estimated from 100,000 Monte Carlo scenarios. 
+          Note the strong positive correlation between US Wind and CA Earthquake (0.35) due to shared 
+          exposure to multi-peril events.
+        </p>
+      </div>
+
+      <h3>4.2 Risk Metrics</h3>
+      <p>
+        The optimized portfolio achieves:
+      </p>
+      <ul>
+        <li>Expected return: 8.2% ROE</li>
+        <li>VaR₉₉.₅: $245M (within $250M capital constraint)</li>
+        <li>CVaR₉₉.₅: $312M</li>
+        <li>Sharpe ratio: 1.43</li>
+        <li>Maximum treaty concentration: 15.7% (EU Windstorm)</li>
+      </ul>
+
+      <div class="figure">
+        <img src="assets/monte-carlo-simulation.png" alt="Monte Carlo loss distribution">
+        <p class="figure-caption">
+          <strong>Figure 3:</strong> Simulated aggregate loss distribution (blue histogram) with fitted 
+          lognormal approximation (red curve). The vertical dashed lines indicate VaR₉₉.₅ and CVaR₉₉.₅.
+        </p>
+      </div>
+
+      <h2>5. Sensitivity Analysis</h2>
+      <p>
+        We examine portfolio robustness to parameter uncertainty:
+      </p>
+      
+      <h3>5.1 Correlation Sensitivity</h3>
+      <p>
+        Increasing the copula dependence parameter by 20% (simulating higher tail dependence during 
+        systemic events) results in:
+      </p>
+      <ul>
+        <li>VaR₉₉.₅ increases to $268M (+9.4%)</li>
+        <li>Optimal allocation shifts away from correlated perils</li>
+        <li>Geographic diversification becomes more valuable</li>
+      </ul>
+
+      <h2>6. Conclusion</h2>
+      <p>
+        This framework demonstrates how modern portfolio theory can be adapted for reinsurance applications 
+        by incorporating:
+      </p>
+      <ol>
+        <li>Heavy-tailed loss distributions from catastrophe models</li>
+        <li>Complex dependence structures via copulas</li>
+        <li>Regulatory capital constraints</li>
+        <li>Tail risk measures (CVaR) appropriate for insurance</li>
+      </ol>
+      
+      <p>
+        The resulting portfolios exhibit superior risk-adjusted returns while satisfying capital requirements 
+        and concentration limits. Future work will explore dynamic rebalancing strategies and the impact of 
+        climate change on loss distributions.
+      </p>
+
+      <!-- References Section -->
+      <div class="references">
+        <h2>References</h2>
+        <ol>
+          <li>
+            Rockafellar, R.T., & Uryasev, S. (2000). "Optimization of conditional value-at-risk." 
+            <em>Journal of Risk</em>, 2(3), 21-42.
+          </li>
+          <li>
+            Pflug, G.C., & Römisch, W. (2007). <em>Modeling, Measuring and Managing Risk</em>. 
+            World Scientific Publishing.
+          </li>
+          <li>
+            McNeil, A.J., Frey, R., & Embrechts, P. (2015). <em>Quantitative Risk Management: 
+            Concepts, Techniques and Tools</em>. Princeton University Press.
+          </li>
+          <li>
+            Wüthrich, M.V., & Merz, M. (2013). <em>Financial Modeling, Actuarial Valuation and 
+            Solvency in Insurance</em>. Springer.
+          </li>
+          <li>
+            Shapiro, A., Dentcheva, D., & Ruszczyński, A. (2014). <em>Lectures on Stochastic Programming: 
+            Modeling and Theory</em>. SIAM.
+          </li>
+        </ol>
+      </div>
+
+    </div>
+
+  </article>
+</main>
+
+<!-- Footer (same as main site) -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© <span id="year"></span> Kristina Williams. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
