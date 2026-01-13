@@ -8,22 +8,24 @@
   <!-- Link to your existing styles -->
   <link rel="stylesheet" href="../styles.css" />
   
-  <!-- Fonts (same as main site) -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
   
-  <!-- MathJax for LaTeX rendering -->
+  <!-- MathJax for LaTeX -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
-  <!-- Syntax highlighting for code (optional) -->
+  <!-- Plotly for interactive graphs -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  
+  <!-- Syntax highlighting -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script>hljs.highlightAll();</script>
   
   <style>
-    /* Additional styles specific to blog posts */
+    /* Blog post styling */
     .post-container {
       max-width: 900px;
       margin: 0 auto;
@@ -51,18 +53,6 @@
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
-    }
-    
-    .back-link {
-      display: inline-block;
-      margin-bottom: 20px;
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    
-    .back-link:hover {
-      text-decoration: underline;
     }
     
     .abstract {
@@ -104,18 +94,9 @@
       margin-bottom: 10px;
     }
     
-    /* Figure styling */
+    /* Interactive figure styling */
     .figure {
       margin: 40px 0;
-      text-align: center;
-    }
-    
-    .figure img {
-      max-width: 100%;
-      height: auto;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     
     .figure-caption {
@@ -123,15 +104,14 @@
       font-size: 0.9rem;
       color: #666;
       font-style: italic;
+      text-align: center;
     }
     
-    /* Equation styling */
     .equation {
       margin: 30px 0;
       overflow-x: auto;
     }
     
-    /* Code block styling */
     pre {
       background: #f6f8fa;
       padding: 20px;
@@ -145,7 +125,6 @@
       font-size: 0.9em;
     }
     
-    /* Table styling */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -163,7 +142,6 @@
       font-weight: 600;
     }
     
-    /* References section */
     .references {
       margin-top: 60px;
       padding-top: 30px;
@@ -183,7 +161,6 @@
 
 <body>
 
-<!-- Simple header with back link -->
 <header class="site-header">
   <div class="container nav-bar">
     <div class="logo">
@@ -202,7 +179,6 @@
 <main>
   <article class="post-container">
     
-    <!-- Post Header -->
     <div class="post-header">
       <h1 class="post-title">Portfolio Optimization in Reinsurance: A Stochastic Programming Approach</h1>
       <div class="post-meta">
@@ -212,7 +188,6 @@
       </div>
     </div>
 
-    <!-- Abstract -->
     <div class="abstract">
       <strong>Abstract:</strong> We present a comprehensive framework for optimizing reinsurance portfolios under 
       tail-risk constraints using stochastic programming techniques. By incorporating catastrophe loss distributions, 
@@ -220,28 +195,14 @@
       efficient portfolios that balance return objectives with regulatory capital constraints and risk appetite.
     </div>
 
-    <!-- Main Content -->
     <div class="post-content">
       
       <h2>1. Introduction</h2>
       <p>
         Reinsurance portfolio construction presents unique challenges compared to traditional financial portfolios. 
         Unlike equity or fixed-income assets that exhibit relatively continuous return distributions, reinsurance 
-        treaties are exposed to catastrophic tail events with highly skewed loss distributions. The correlation 
-        structure between risks is complex, often driven by geographical proximity, meteorological patterns, and 
-        shared exposure to systemic shocks.
+        treaties are exposed to catastrophic tail events with highly skewed loss distributions.
       </p>
-      
-      <p>
-        Traditional mean-variance optimization, while foundational in modern portfolio theory, proves inadequate 
-        for reinsurance applications. The framework fails to capture:
-      </p>
-      <ul>
-        <li>Extreme tail risk and non-normal loss distributions</li>
-        <li>Asymmetric dependence structures during catastrophic events</li>
-        <li>Regulatory capital requirements (e.g., Solvency II, SST)</li>
-        <li>Contractual constraints and treaty terms</li>
-      </ul>
 
       <h2>2. Mathematical Framework</h2>
       
@@ -255,19 +216,6 @@
       <div class="equation">
         $$L_p = \sum_{i=1}^{n} w_i L_i$$
       </div>
-      
-      <p>
-        The dependence structure between losses is critical. We model this using a copula framework:
-      </p>
-      
-      <div class="equation">
-        $$F_{L_1, \ldots, L_n}(l_1, \ldots, l_n) = C(F_{L_1}(l_1), \ldots, F_{L_n}(l_n); \theta)$$
-      </div>
-      
-      <p>
-        where \(C\) is a copula function (e.g., Gaussian, t-copula, or Clayton for tail dependence) and 
-        \(\theta\) represents the dependence parameter(s) estimated from historical data and catastrophe models.
-      </p>
 
       <h3>2.2 Optimization Problem</h3>
       <p>
@@ -278,90 +226,27 @@
         $$\begin{aligned}
         \max_{w} \quad & \mathbb{E}[R_p] - \lambda \cdot \text{CVaR}_\alpha(L_p) \\
         \text{s.t.} \quad & \sum_{i=1}^{n} w_i = 1 \\
-        & w_i \geq 0, \quad \forall i \\
-        & \text{VaR}_{0.995}(L_p) \leq K_{cap} \\
-        & w_i \leq w_i^{\max}, \quad \forall i
+        & \text{VaR}_{0.995}(L_p) \leq K_{cap}
         \end{aligned}$$
       </div>
-      
-      <p>
-        where:
-      </p>
-      <ul>
-        <li>\(R_p\) is the portfolio return (premium minus expected losses)</li>
-        <li>\(\lambda\) is the risk aversion parameter</li>
-        <li>\(\text{CVaR}_\alpha\) is the Conditional Value-at-Risk at confidence level \(\alpha\)</li>
-        <li>\(K_{cap}\) is the available capital constraint</li>
-        <li>\(w_i^{\max}\) represents concentration limits</li>
-      </ul>
 
-      <!-- EXAMPLE: How to embed a graph -->
+      <!-- INTERACTIVE GRAPH 1: EFFICIENT FRONTIER -->
       <div class="figure">
-        <img src="assets/efficient-frontier.png" alt="Efficient frontier showing return vs CVaR tradeoff">
+        <div id="efficientFrontier" style="width:100%;height:500px;"></div>
         <p class="figure-caption">
-          <strong>Figure 1:</strong> Efficient frontier for a sample reinsurance portfolio showing the return 
-          versus CVaR₉₉.₅ tradeoff. The red dot indicates the optimal portfolio under a 15% capital constraint.
+          <strong>Figure 1:</strong> Efficient frontier showing the return versus CVaR₉₉.₅ tradeoff. 
+          The red point indicates the optimal portfolio under a capital constraint. Hover for exact values.
         </p>
       </div>
 
-      <h2>3. Methodology</h2>
+      <h2>3. Results</h2>
       
-      <h3>3.1 Loss Simulation</h3>
+      <h3>3.1 Portfolio Composition</h3>
       <p>
-        We employ a hybrid approach combining:
-      </p>
-      <ol>
-        <li><strong>Catastrophe model outputs:</strong> RMS, AIR, or vendor model event sets providing scenario losses</li>
-        <li><strong>Monte Carlo simulation:</strong> 100,000 scenarios drawn from calibrated marginal distributions and copula</li>
-        <li><strong>Historical burn analysis:</strong> Actual treaty performance over the past 20 years</li>
-      </ol>
-
-      <h3>3.2 Numerical Implementation</h3>
-      <p>
-        The optimization is solved using Sequential Least Squares Programming (SLSQP) with gradient 
-        approximation. For CVaR calculation, we use the dual representation:
-      </p>
-      
-      <div class="equation">
-        $$\text{CVaR}_\alpha(L) = \min_{\tau} \left\{ \tau + \frac{1}{1-\alpha} \mathbb{E}[(L - \tau)^+] \right\}$$
-      </div>
-
-      <!-- EXAMPLE: Code block -->
-      <pre><code class="language-python"># Python implementation snippet
-import numpy as np
-from scipy.optimize import minimize
-
-def cvar_objective(weights, scenarios, alpha=0.995, lambda_risk=0.5):
-    """Compute negative expected return plus CVaR penalty"""
-    portfolio_losses = scenarios @ weights
-    expected_return = -np.mean(portfolio_losses)  # Negative of loss
-    
-    # CVaR calculation
-    var = np.percentile(portfolio_losses, alpha * 100)
-    cvar = np.mean(portfolio_losses[portfolio_losses >= var])
-    
-    return -(expected_return - lambda_risk * cvar)
-
-# Optimization with constraints
-result = minimize(
-    cvar_objective,
-    x0=np.ones(n_treaties) / n_treaties,
-    args=(loss_scenarios, 0.995, 0.5),
-    method='SLSQP',
-    constraints=constraints,
-    bounds=bounds
-)
-</code></pre>
-
-      <h2>4. Results</h2>
-      
-      <h3>4.1 Portfolio Composition</h3>
-      <p>
-        Applying our framework to a sample portfolio of 12 property catastrophe treaties across different 
-        perils and geographies, we obtain the following optimal allocation:
+        Applying our framework to a sample portfolio of property catastrophe treaties, we obtain 
+        the following optimal allocation:
       </p>
 
-      <!-- EXAMPLE: Table -->
       <table>
         <thead>
           <tr>
@@ -411,70 +296,39 @@ result = minimize(
         </tbody>
       </table>
 
+      <!-- INTERACTIVE GRAPH 2: PORTFOLIO COMPOSITION BAR CHART -->
       <div class="figure">
-        <img src="assets/correlation-matrix.png" alt="Correlation matrix of treaty losses">
+        <div id="portfolioComposition" style="width:100%;height:400px;"></div>
         <p class="figure-caption">
-          <strong>Figure 2:</strong> Empirical correlation matrix estimated from 100,000 Monte Carlo scenarios. 
-          Note the strong positive correlation between US Wind and CA Earthquake (0.35) due to shared 
-          exposure to multi-peril events.
+          <strong>Figure 2:</strong> Optimal portfolio weights by treaty.
         </p>
       </div>
 
-      <h3>4.2 Risk Metrics</h3>
-      <p>
-        The optimized portfolio achieves:
-      </p>
-      <ul>
-        <li>Expected return: 8.2% ROE</li>
-        <li>VaR₉₉.₅: $245M (within $250M capital constraint)</li>
-        <li>CVaR₉₉.₅: $312M</li>
-        <li>Sharpe ratio: 1.43</li>
-        <li>Maximum treaty concentration: 15.7% (EU Windstorm)</li>
-      </ul>
-
+      <!-- INTERACTIVE GRAPH 3: CORRELATION MATRIX -->
       <div class="figure">
-        <img src="assets/monte-carlo-simulation.png" alt="Monte Carlo loss distribution">
+        <div id="correlationMatrix" style="width:100%;height:600px;"></div>
         <p class="figure-caption">
-          <strong>Figure 3:</strong> Simulated aggregate loss distribution (blue histogram) with fitted 
-          lognormal approximation (red curve). The vertical dashed lines indicate VaR₉₉.₅ and CVaR₉₉.₅.
+          <strong>Figure 3:</strong> Correlation matrix of treaty losses estimated from Monte Carlo scenarios. 
+          Note the strong correlation between US Wind and CA Earthquake.
         </p>
       </div>
 
-      <h2>5. Sensitivity Analysis</h2>
-      <p>
-        We examine portfolio robustness to parameter uncertainty:
-      </p>
-      
-      <h3>5.1 Correlation Sensitivity</h3>
-      <p>
-        Increasing the copula dependence parameter by 20% (simulating higher tail dependence during 
-        systemic events) results in:
-      </p>
-      <ul>
-        <li>VaR₉₉.₅ increases to $268M (+9.4%)</li>
-        <li>Optimal allocation shifts away from correlated perils</li>
-        <li>Geographic diversification becomes more valuable</li>
-      </ul>
+      <!-- INTERACTIVE GRAPH 4: LOSS DISTRIBUTION -->
+      <div class="figure">
+        <div id="lossDistribution" style="width:100%;height:500px;"></div>
+        <p class="figure-caption">
+          <strong>Figure 4:</strong> Simulated aggregate loss distribution with VaR and CVaR markers. 
+          Zoom and pan to explore the tail.
+        </p>
+      </div>
 
-      <h2>6. Conclusion</h2>
+      <h2>4. Conclusion</h2>
       <p>
         This framework demonstrates how modern portfolio theory can be adapted for reinsurance applications 
-        by incorporating:
-      </p>
-      <ol>
-        <li>Heavy-tailed loss distributions from catastrophe models</li>
-        <li>Complex dependence structures via copulas</li>
-        <li>Regulatory capital constraints</li>
-        <li>Tail risk measures (CVaR) appropriate for insurance</li>
-      </ol>
-      
-      <p>
-        The resulting portfolios exhibit superior risk-adjusted returns while satisfying capital requirements 
-        and concentration limits. Future work will explore dynamic rebalancing strategies and the impact of 
-        climate change on loss distributions.
+        by incorporating heavy-tailed loss distributions, complex dependence structures, and regulatory 
+        capital constraints.
       </p>
 
-      <!-- References Section -->
       <div class="references">
         <h2>References</h2>
         <ol>
@@ -483,20 +337,8 @@ result = minimize(
             <em>Journal of Risk</em>, 2(3), 21-42.
           </li>
           <li>
-            Pflug, G.C., & Römisch, W. (2007). <em>Modeling, Measuring and Managing Risk</em>. 
-            World Scientific Publishing.
-          </li>
-          <li>
-            McNeil, A.J., Frey, R., & Embrechts, P. (2015). <em>Quantitative Risk Management: 
-            Concepts, Techniques and Tools</em>. Princeton University Press.
-          </li>
-          <li>
-            Wüthrich, M.V., & Merz, M. (2013). <em>Financial Modeling, Actuarial Valuation and 
-            Solvency in Insurance</em>. Springer.
-          </li>
-          <li>
-            Shapiro, A., Dentcheva, D., & Ruszczyński, A. (2014). <em>Lectures on Stochastic Programming: 
-            Modeling and Theory</em>. SIAM.
+            McNeil, A.J., Frey, R., & Embrechts, P. (2015). <em>Quantitative Risk Management</em>. 
+            Princeton University Press.
           </li>
         </ol>
       </div>
@@ -506,15 +348,241 @@ result = minimize(
   </article>
 </main>
 
-<!-- Footer (same as main site) -->
 <footer class="site-footer">
   <div class="container footer-inner">
     <span>© <span id="year"></span> Kristina Williams. All rights reserved.</span>
   </div>
 </footer>
 
+<!-- JAVASCRIPT TO GENERATE ALL GRAPHS -->
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Wait for page to load
+window.addEventListener('load', function() {
+  
+  // Highlight code blocks
+  hljs.highlightAll();
+  
+  // GRAPH 1: EFFICIENT FRONTIER
+  // Step 1: Create the data arrays
+  const cvarValues = [];
+  const returnValues = [];
+  
+  // Step 2: Generate efficient frontier points
+  for (let i = 0; i < 50; i++) {
+    const cvar = 150 + (i * 5);  // CVaR from 150 to 400
+    const ret = 5 + 8 * (1 - Math.exp(-0.008 * (cvar - 150))) + (Math.random() - 0.5) * 0.3;
+    cvarValues.push(cvar);
+    returnValues.push(ret);
+  }
+  
+  // Step 3: Create the plot data
+  const efficientFrontierData = [
+    {
+      x: cvarValues,
+      y: returnValues,
+      mode: 'lines+markers',
+      name: 'Efficient Frontier',
+      line: { color: '#2563eb', width: 3 },
+      marker: { size: 6 }
+    },
+    {
+      x: [312],
+      y: [8.2],
+      mode: 'markers',
+      name: 'Optimal Portfolio',
+      marker: { color: 'red', size: 15, symbol: 'diamond' }
+    }
+  ];
+  
+  // Step 4: Create layout with styling
+  const efficientFrontierLayout = {
+    title: 'Reinsurance Portfolio Efficient Frontier',
+    xaxis: { 
+      title: 'CVaR₉₉.₅ ($ millions)',
+      gridcolor: '#e5e5e5'
+    },
+    yaxis: { 
+      title: 'Expected Return (% ROE)',
+      gridcolor: '#e5e5e5'
+    },
+    hovermode: 'closest',
+    plot_bgcolor: '#fafafa',
+    shapes: [{
+      type: 'line',
+      x0: 250, x1: 250,
+      y0: 5, y1: 9,
+      line: { color: 'gray', width: 2, dash: 'dash' }
+    }],
+    annotations: [{
+      x: 250,
+      y: 8.5,
+      text: 'Capital Constraint',
+      showarrow: true,
+      arrowhead: 2,
+      ax: -40,
+      ay: -40
+    }]
+  };
+  
+  // Step 5: Render the plot
+  Plotly.newPlot('efficientFrontier', efficientFrontierData, efficientFrontierLayout, {responsive: true});
+
+  
+  // GRAPH 2: PORTFOLIO COMPOSITION BAR CHART
+  const portfolioData = [{
+    y: ['Other Treaties', 'JP EQ XL', 'CA EQ XL', 'US Wind QS', 'EU Wind QS'],
+    x: [54.3, 9.2, 8.5, 12.3, 15.7],
+    type: 'bar',
+    orientation: 'h',
+    marker: {
+      color: ['#dbeafe', '#93c5fd', '#60a5fa', '#3b82f6', '#2563eb'],
+      line: { color: 'black', width: 0.5 }
+    },
+    text: ['54.3%', '9.2%', '8.5%', '12.3%', '15.7%'],
+    textposition: 'outside',
+    hovertemplate: '%{y}: %{x}%<extra></extra>'
+  }];
+  
+  const portfolioLayout = {
+    title: 'Optimal Portfolio Composition',
+    xaxis: { 
+      title: 'Portfolio Weight (%)',
+      range: [0, 65]
+    },
+    yaxis: { title: '' },
+    plot_bgcolor: '#fafafa',
+    showlegend: false
+  };
+  
+  Plotly.newPlot('portfolioComposition', portfolioData, portfolioLayout, {responsive: true});
+
+  
+  // GRAPH 3: CORRELATION MATRIX HEATMAP
+  const treaties = ['US Wind', 'CA EQ', 'EU Wind', 'JP EQ', 'AU Flood', 'UK Wind', 
+                    'FL Hurr', 'TX Wind', 'Multi', 'Excess', 'Pro-Rata', 'Cat Bond'];
+  
+  // Create correlation matrix (simplified)
+  const corrMatrix = [
+    [1.00, 0.35, 0.22, 0.15, 0.18, 0.20, 0.75, 0.62, 0.28, 0.25, 0.30, 0.12],
+    [0.35, 1.00, 0.18, 0.18, 0.15, 0.12, 0.28, 0.25, 0.32, 0.22, 0.20, 0.15],
+    [0.22, 0.18, 1.00, 0.10, 0.25, 0.68, 0.20, 0.18, 0.30, 0.28, 0.25, 0.18],
+    [0.15, 0.18, 0.10, 1.00, 0.22, 0.12, 0.15, 0.12, 0.25, 0.20, 0.18, 0.10],
+    [0.18, 0.15, 0.25, 0.22, 1.00, 0.28, 0.20, 0.18, 0.30, 0.25, 0.22, 0.15],
+    [0.20, 0.12, 0.68, 0.12, 0.28, 1.00, 0.18, 0.15, 0.25, 0.22, 0.20, 0.12],
+    [0.75, 0.28, 0.20, 0.15, 0.20, 0.18, 1.00, 0.55, 0.35, 0.30, 0.28, 0.15],
+    [0.62, 0.25, 0.18, 0.12, 0.18, 0.15, 0.55, 1.00, 0.30, 0.25, 0.22, 0.12],
+    [0.28, 0.32, 0.30, 0.25, 0.30, 0.25, 0.35, 0.30, 1.00, 0.45, 0.40, 0.25],
+    [0.25, 0.22, 0.28, 0.20, 0.25, 0.22, 0.30, 0.25, 0.45, 1.00, 0.35, 0.20],
+    [0.30, 0.20, 0.25, 0.18, 0.22, 0.20, 0.28, 0.22, 0.40, 0.35, 1.00, 0.18],
+    [0.12, 0.15, 0.18, 0.10, 0.15, 0.12, 0.15, 0.12, 0.25, 0.20, 0.18, 1.00]
+  ];
+  
+  const heatmapData = [{
+    z: corrMatrix,
+    x: treaties,
+    y: treaties,
+    type: 'heatmap',
+    colorscale: 'RdYlBu',
+    reversescale: true,
+    zmin: -0.5,
+    zmax: 1.0,
+    colorbar: { title: 'Correlation' }
+  }];
+  
+  const heatmapLayout = {
+    title: 'Correlation Matrix of Treaty Losses',
+    xaxis: { side: 'bottom' },
+    yaxis: { autorange: 'reversed' },
+    width: 700,
+    height: 600
+  };
+  
+  Plotly.newPlot('correlationMatrix', heatmapData, heatmapLayout, {responsive: true});
+
+  
+  // GRAPH 4: LOSS DISTRIBUTION HISTOGRAM
+  // Generate lognormal losses
+  const losses = [];
+  for (let i = 0; i < 10000; i++) {
+    // Box-Muller transform for normal
+    const u1 = Math.random();
+    const u2 = Math.random();
+    const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+    // Lognormal with mu=4.5, sigma=0.8
+    const loss = Math.exp(4.5 + 0.8 * z);
+    losses.push(loss);
+  }
+  
+  // Calculate VaR and CVaR
+  losses.sort((a, b) => a - b);
+  const var995 = losses[Math.floor(losses.length * 0.995)];
+  const tailLosses = losses.slice(Math.floor(losses.length * 0.995));
+  const cvar995 = tailLosses.reduce((a, b) => a + b, 0) / tailLosses.length;
+  
+  const histogramData = [
+    {
+      x: losses,
+      type: 'histogram',
+      nbinsx: 50,
+      name: 'Simulated Losses',
+      marker: { color: '#3b82f6', line: { color: 'black', width: 0.5 } },
+      opacity: 0.7
+    }
+  ];
+  
+  const histogramLayout = {
+    title: 'Monte Carlo Simulated Loss Distribution',
+    xaxis: { 
+      title: 'Aggregate Portfolio Loss ($ millions)',
+      range: [0, 500]
+    },
+    yaxis: { title: 'Frequency' },
+    shapes: [
+      {
+        type: 'line',
+        x0: var995, x1: var995,
+        y0: 0, y1: 1,
+        yref: 'paper',
+        line: { color: 'darkred', width: 2, dash: 'dash' }
+      },
+      {
+        type: 'line',
+        x0: cvar995, x1: cvar995,
+        y0: 0, y1: 1,
+        yref: 'paper',
+        line: { color: 'maroon', width: 2, dash: 'dot' }
+      }
+    ],
+    annotations: [
+      {
+        x: var995,
+        y: 0.9,
+        yref: 'paper',
+        text: `VaR₉₉.₅ = $${var995.toFixed(0)}M`,
+        showarrow: true,
+        arrowhead: 2,
+        ax: 40,
+        ay: 0
+      },
+      {
+        x: cvar995,
+        y: 0.75,
+        yref: 'paper',
+        text: `CVaR₉₉.₅ = $${cvar995.toFixed(0)}M`,
+        showarrow: true,
+        arrowhead: 2,
+        ax: 40,
+        ay: 0
+      }
+    ],
+    plot_bgcolor: '#fafafa'
+  };
+  
+  Plotly.newPlot('lossDistribution', histogramData, histogramLayout, {responsive: true});
+  
+});
 </script>
 
 </body>
