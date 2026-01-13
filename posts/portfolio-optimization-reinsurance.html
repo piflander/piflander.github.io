@@ -14,15 +14,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
   
   <!-- MathJax for LaTeX -->
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['$$', '$$']]
+      }
+    };
+  </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  
-  <!-- Plotly for interactive graphs -->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   
   <!-- Syntax highlighting -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  
+  <!-- Plotly for interactive graphs - load at end of head to ensure it's available -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
   
   <style>
     /* Blog post styling */
@@ -358,11 +365,22 @@
 <script>
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// Wait for page to load
-window.addEventListener('load', function() {
+// Check if Plotly loaded
+console.log('Plotly loaded:', typeof Plotly !== 'undefined');
+
+// Function to create all graphs
+function createGraphs() {
   
-  // Highlight code blocks
-  hljs.highlightAll();
+  // Check if Plotly is available
+  if (typeof Plotly === 'undefined') {
+    console.error('Plotly library not loaded!');
+    document.querySelectorAll('.figure > div').forEach(div => {
+      div.innerHTML = '<p style="color: red; padding: 20px;">Error: Plotly library failed to load. Please refresh the page.</p>';
+    });
+    return;
+  }
+  
+  console.log('Creating graphs...');
   
   // GRAPH 1: EFFICIENT FRONTIER
   // Step 1: Create the data arrays
@@ -582,7 +600,25 @@ window.addEventListener('load', function() {
   
   Plotly.newPlot('lossDistribution', histogramData, histogramLayout, {responsive: true});
   
-});
+  Plotly.newPlot('lossDistribution', histogramData, histogramLayout, {responsive: true});
+  
+  console.log('All graphs created successfully!');
+}
+
+// Wait for both DOM and Plotly to be ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(createGraphs, 100); // Small delay to ensure Plotly is ready
+  });
+} else {
+  setTimeout(createGraphs, 100);
+}
+
+// Also try to highlight code if hljs is available
+if (typeof hljs !== 'undefined') {
+  hljs.highlightAll();
+}
+
 </script>
 
 </body>
