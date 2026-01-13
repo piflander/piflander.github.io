@@ -3,7 +3,7 @@
   
   <!-- Homepage -->
   <url>
-    <loc>https://piflander.github.io/</loc>
+    <loc>https://nometriare.com/</loc>
     <lastmod>2026-01-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -11,7 +11,7 @@
   
   <!-- Blog Post: Portfolio Optimization -->
   <url>
-    <loc>https://piflander.github.io/posts/portfolio-optimization-reinsurance.html</loc>
+    <loc>https://nometriare.com/posts/portfolio-optimization-reinsurance.html</loc>
     <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
